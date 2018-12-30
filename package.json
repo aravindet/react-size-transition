@@ -1,6 +1,6 @@
 {
   "name": "react-size-transition",
-  "version": "1.0.0",
+  "version": "0.5.0",
   "description": "Gently transition the sizes of containers when their contents change.",
   "author": "aravindet",
   "license": "MIT",
