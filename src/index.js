@@ -1,5 +1,6 @@
 import React, { PureComponent, Children, createRef, cloneElement } from 'react';
 import PropTypes from 'prop-types';
+import isEqual from 'react-fast-compare';
 
 export default class SizeTransition extends PureComponent {
   contentEl = createRef();
@@ -23,7 +24,7 @@ export default class SizeTransition extends PureComponent {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const child = Children.only(nextProps.children);
-    if (prevState.nextChild && child === prevState.nextChild.shown) return prevState;
+    if (prevState.nextChild && isEqual(child, prevState.nextChild.shown)) return prevState;
 
     return {
       ...prevState,
@@ -72,7 +73,7 @@ export default class SizeTransition extends PureComponent {
   }
 
   render() {
-    const { transition } = this.props;
+    const { transition, children, timeout, hiddenClassName, ...props } = this.props;
     const { prevChild, prevSize, nextChild, nextSize, flip } = this.state;
 
     const outer = {
@@ -91,12 +92,12 @@ export default class SizeTransition extends PureComponent {
     return (
       <div style={outer}>
         {prevChild && (
-          <div key={flip ? 'front' : 'back'} style={{ ...inner, ...prevSize }}>
+          <div key={flip ? 'front' : 'back'} style={{ ...inner, ...prevSize }} {...props}>
             {prevChild.hidden}
           </div>
         )}
         {nextChild && (
-          <div key={flip ? 'back' : 'front'} style={{ ...inner, ...nextSize }} ref={this.contentEl}>
+          <div key={flip ? 'back' : 'front'} style={{ ...inner, ...nextSize }} {...props} ref={this.contentEl}>
             {!nextSize ? nextChild.hidden : nextChild.shown}
           </div>
         )}

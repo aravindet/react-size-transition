@@ -19,7 +19,11 @@ import SizeTransition from 'react-size-transition';
 // This example uses styled components, but you can use any CSS framework.
 import styled from 'styled-components';
 
-MyContent
+FadeText = styled.div`
+  transition: 0.5s;
+  opacity: 1;
+  &.hidden { opacity: 0; }
+`
 
 class Example extends Component {
   render () {
@@ -34,15 +38,30 @@ class Example extends Component {
 
 ## How it works
 
-Whenever the SizeTransition component is re-rendered with new content, the old children continue to be rendered for a short while with an extra className, `hidden`. The new content is also rendered overlapping the old content.
+Whenever the SizeTransition component is re-rendered with new content, the old children continue to be rendered, overlapping the new children, for a short while. A `hidden` class is added to children to trigger transitions.
 
-Note that during the transition content may render outside the container. This should be accounted for in the animation timings.
+A typical lifecycle, showing initial rendering and an update:
+
+|                       | First child           | Second child          |
+|-----------------------|-----------------------|-----------------------|
+| **Initial render**    | Mounted with `hidden` | -                     |
+| Immediately after     | `hidden` removed      | -                     |
+| **Content update**    | `hidden` added        | Mounted with `hidden` |
+| Immediately after     | -                     | `hidden` removed      |
+| 1 second later        | Unmounted             | -                     |
+
+Note that during transitions, content may render outside the container. This should be accounted for in the transition.
+
+## Props
+
+- **transition**: The `transition` CSS property applied on the resizing container. Default: `0.5s ease-in-out`.
+- **timeout**: Milliseconds to wait, after receiving new children, before removing old children from the DOM. Default: `1000`
+- **hiddenClassName**: The class name to add to children that should be hidden.
 
 ## Future work
 
 Several additional features are required before we hit 1.0:
 
-- Improve content comparison to avoid transitions when the new content is identical to old.
 - Support custom alignment between old and new content (during the transition). Currently it is centered both vertically and horizontally.
 - Support more than one child element.
 - Support all the react transition group states.

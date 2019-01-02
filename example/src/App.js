@@ -10,7 +10,7 @@ export default class App extends Component {
   render () {
     return (
       <div className="box" onClick={this.toggle}>
-        <SizeTransition transition="0.5s ease-in-out" timeout={10000}>
+        <SizeTransition transition="0.5s ease-in-out" timeout={10000} className="fade">
           <div className="fade">
             {this.state.short % 3 === 0
               ? 'Short'
