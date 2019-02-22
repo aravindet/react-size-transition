@@ -50,12 +50,11 @@ A typical lifecycle, showing initial rendering and an update:
 | Immediately after     | -                     | `hidden` removed      |
 | 1 second later        | Unmounted             | -                     |
 
-Note that during transitions, content may render outside the container. This should be accounted for in the transition.
+Note that during transitions, content may render outside the container. This should be accounted for in the design.
 
 ## Props
 
-- **transition**: The `transition` CSS property applied on the resizing container. Default: `0.5s ease-in-out`.
-- **timeout**: Milliseconds to wait, after receiving new children, before removing old children from the DOM. Default: `1000`
+- **transition**: The `transition` CSS property applied on the resizing container. Default: `0.5s ease-in-out`. Note that this must not be `none`. Old children are removed from the DOM when this transition ends.
 - **hiddenClassName**: The class name to add to children that should be hidden.
 
 ## Future work
@@ -63,9 +62,7 @@ Note that during transitions, content may render outside the container. This sho
 Several additional features are required before we hit 1.0:
 
 - Support custom alignment between old and new content (during the transition). Currently it is centered both vertically and horizontally.
-- Support more than one child element.
-- Support all the react transition group states.
-- Use DOM resize sensors to detect size changes outside the React lifecycle.
+- Separate the container size transition and the child entry/exit transition into separate components.
 
 ## License
 
